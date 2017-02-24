@@ -20,10 +20,8 @@ public:
     
     /** Inserts a word into the trie. */
     void insert(string word) {
-        if (word.size() == 0)
-            return;
-        
         transform(word.begin(), word.end(), word.begin(), ::tolower);
+
         Node *n = root;
         for (char ch : word) {
             int index = ch - 'a';
@@ -36,14 +34,9 @@ public:
     
     /** Returns if the word is in the trie. */
     bool search(string word) {
-        if (word.size() == 0)
-            return false;
-        
-        // lowercase it
         transform(word.begin(), word.end(), word.begin(), ::tolower);
         
         Node *n = root;
-        
         for (char ch : word) {
             int index = ch - 'a';
             n = n->children[index];
@@ -55,13 +48,9 @@ public:
     
     /** Returns if there is any word in the trie that starts with the given prefix. */
     bool startsWith(string prefix) {
-        if (prefix.size() == 0)
-            return true;
-        
         transform(prefix.begin(), prefix.end(), prefix.begin(), ::tolower);
         
         Node *n = root;
-        
         for (char ch : prefix) {
             int index = ch -'a';
             n = n->children[index];
