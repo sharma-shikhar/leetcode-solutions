@@ -6,7 +6,7 @@ class Solution {
     }
     bool isValidTwoLetter(string s) {
         int n = strToInt(s); 
-        return  n > 9 && n <= 26;
+        return  n >= 10 && n <= 26;
     }
     bool isValidOneLetter(char ch) {
         return ch >= '1' && ch <= '9';
