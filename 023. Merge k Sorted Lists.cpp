@@ -6,26 +6,21 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
-class ListNodeExtra {
-public:
-    ListNode *n;
-    int index;
-    ListNodeExtra(ListNode *n, int index) : n(n), index(index) {}
-};
+
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& _lists) {
         vector<ListNode *> lists = _lists;
         
-        auto cmp = [] (ListNodeExtra & l1, ListNodeExtra & l2) -> bool {
-            return (l1.n)->val > (l2.n)->val;
+        auto cmp = [] (pair<ListNode *, int> & p1, pair<ListNode *, int> & p2) -> bool {
+            return (p1.first)->val > (p2.first)->val;
         };
         
-        priority_queue<ListNodeExtra, vector<ListNodeExtra>, decltype(cmp)> minHeap(cmp);
+        priority_queue<pair<ListNode *, int>, vector<pair<ListNode *, int>>, decltype(cmp)> minHeap(cmp);
         
         for (int i=0; i<lists.size(); i++) {
             if (lists[i]) {
-                minHeap.push(ListNodeExtra(lists[i], i));
+                minHeap.push(make_pair(lists[i], i));
                 lists[i] = lists[i]->next;
             }
         }
@@ -34,15 +29,15 @@ public:
         ListNode *res = resHead;
         
         while (!minHeap.empty()) {
-            ListNodeExtra ln = minHeap.top(); minHeap.pop();
-            ListNode *n = ln.n;
-            int index = ln.index;
+            pair<ListNode *, int> p = minHeap.top(); minHeap.pop();
+            ListNode *n = p.first;
+            int index = p.second;
             
             res->next = n;
             res = n;
             
             if (lists[index]) {
-                minHeap.push(ListNodeExtra(lists[index], index));
+                minHeap.push(make_pair(lists[index], index));
                 lists[index] = lists[index]->next;
             }
             
