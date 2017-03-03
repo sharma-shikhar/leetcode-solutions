@@ -1,35 +1,32 @@
 class Solution {
-    int strToInt(string str) {
-        stringstream ss(str);
+    int strToInt(string s) {
         int val;
+        stringstream ss(s);
         return ss >> val ? val : 0;
     }
-    bool isValidTwoLetter(string s) {
-        int n = strToInt(s); 
-        return  n >= 10 && n <= 26;
-    }
-    bool isValidOneLetter(char ch) {
+    bool validOneLetter(char ch) {
         return ch >= '1' && ch <= '9';
+    }
+    bool validTwoLetter(string s) {
+        int num = strToInt(s);
+        return num >= 10 && num <= 26;
     }
 public:
     int numDecodings(string s) {
         if (!s.size()) return 0;
         
-        int *ways = new int[s.size() + 1];
-        fill_n(ways, s.size() + 1, 0);
+        vector<int> ways(s.size() + 1, 0);
         ways[0] = 1;
-        ways[1] = isValidOneLetter(s[0]) ? 1 : 0;
+        if (validOneLetter(s[0]))
+            ways[1] = 1;
         
-        for (int i=2; i<=s.size(); i++) {
-            if (isValidOneLetter(s[i-1]))
-                ways[i] += ways[i-1];
-            
-            if (isValidTwoLetter(s.substr(i-2, 2)))
-                ways[i] += ways[i-2];
+        for (int i=1; i<s.size(); i++) {
+            if (validOneLetter(s[i]))
+                ways[i+1] += ways[i];
+            if (validTwoLetter(s.substr(i-1, 2)))
+                ways[i+1] += ways[i-1];
         }
-
-        int val = ways[s.size()];
-        delete[] ways;
-        return val;
+        
+        return ways[s.size()];
     }
 };
