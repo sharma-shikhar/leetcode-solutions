@@ -40,7 +40,6 @@ public:
                 minHeap.push(make_pair(lists[index], index));
                 lists[index] = lists[index]->next;
             }
-            
         }
         
         res = resHead->next;
